@@ -1,16 +1,18 @@
-require_relative '../helpers/jwt_helper'
+require_relative './concerns/jwt_helper'
 
 class AuthController < ApplicationController
+  include JsonWebToken
+  skip_before_action :authenticate_request, only: %i[login register]
   before_action :validate_user, only: [:login]
 
   def login
     @user = User.find_by(username: login_params[:username])
 
     if @user&.authenticate(login_params[:password])
-      token = JsonWebToken.jwt_encode({ id: @user.id, username: @user.username })
+      token = jwt_encode({ user_id: @user.id, username: @user.username })
       render json: { token: }, status: :ok
     else
-      render json: { errors: "Invalid Username and Password" }, status: :bad_request
+      render json: { errors: 'Invalid Username and Password' }, status: :bad_request
     end
   end
 
