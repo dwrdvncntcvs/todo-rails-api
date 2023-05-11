@@ -31,7 +31,11 @@ class TodosController < ApplicationController
     end
   end
 
-  def destroy; end
+  def destroy
+    @todo.destroy
+    render json: { message: "#{@todo.title} deleted successfully" },
+           status: :ok
+  end
 
   private
 
