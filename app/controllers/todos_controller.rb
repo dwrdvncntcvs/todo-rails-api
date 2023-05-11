@@ -1,10 +1,10 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[update destroy]
+  before_action :set_todo, only: %i[update done destroy]
 
   def index
     @todo = Todo.all
 
-    render json: @todo
+    render json: @todo, status: :ok
   end
 
   def create
@@ -23,7 +23,7 @@ class TodosController < ApplicationController
     if @todo.update(todo_params)
       @todo = set_todo
 
-      render json: { updated_todo: @todo, message: 'Todo updated successfully' },
+      render json: { todo: @todo, message: 'Todo updated successfully' },
              status: :ok
     else
       render json: { errors: @todo.errors },
@@ -33,8 +33,20 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
-    render json: { message: "#{@todo.title} deleted successfully" },
+    render json: { message: "#{@todo.title}' deleted successfully" },
            status: :ok
+  end
+
+  def done
+    if @todo.update(is_done: true)
+      @todo = set_todo
+
+      render json: { todo: @todo, message: "'#{@todo.title}' is done!" },
+             status: :ok
+    else
+      render json: { errors: @todo.errors },
+             status: :unprocessable_entity
+    end
   end
 
   private
