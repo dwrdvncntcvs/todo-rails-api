@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_11_085354) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_11_094301) do
   create_table "todos", force: :cascade do |t|
     t.string "title", null: false
     t.string "desc", null: false
     t.boolean "is_done", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
