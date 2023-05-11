@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # AUTH ROUTES
+  post 'auth/login', to: 'auth#login'
+  post 'auth/register', to: 'auth#register'
+
   # TODOS ROUTES
   get 'todos/', to: 'todos#index'
   post 'todos/', to: 'todos#create'
