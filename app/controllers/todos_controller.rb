@@ -1,5 +1,9 @@
 class TodosController < ApplicationController
-  def index; end
+  def index
+    @todo = Todo.all
+
+    render json: @todo
+  end
 
   def create
     @todo = Todo.new(todo_params)
