@@ -2,13 +2,14 @@ class TodosController < ApplicationController
   before_action :set_todo, only: %i[update done destroy]
 
   def index
-    @todo = Todo.all
+    @todo = Todo.where(user_id: @current_user.id)
 
     render json: @todo, status: :ok
   end
 
   def create
     @todo = Todo.new(todo_params)
+    @todo.user_id = @current_user.id
 
     if @todo.save
       render json: todo_params,
